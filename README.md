@@ -3,6 +3,7 @@
 ## 🎯 Project Overview
 
 A production-ready ETL pipeline that fetches weather data from Open-Meteo API, transforms it, and loads it into PostgreSQL running on Docker. Includes an interactive dashboard for data visualization.
+<img width="1497" height="1400" alt="newplot" src="https://github.com/user-attachments/assets/7995e7ac-86ff-4270-a8df-c26600aa5e48" />
 
 ### ✨ Features
 
