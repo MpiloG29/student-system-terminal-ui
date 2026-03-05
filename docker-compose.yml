@@ -1,4 +1,24 @@
 ﻿services:
+  weather_app:
+    build: .
+    container_name: weather_pipeline_app
+    command: ["python", "run_app.py", "--mode", "all", "--output-dir", "output"]
+    volumes:
+      - ./output:/app/output
+      - ./weather_data.db:/app/weather_data.db
+
+  dashboard_ui:
+    image: python:3.11-slim
+    container_name: weather_dashboard_ui
+    working_dir: /srv
+    command: ["python", "-m", "http.server", "8080"]
+    volumes:
+      - ./output:/srv
+    ports:
+      - "8080:8080"
+    depends_on:
+      - weather_app
+
   postgres:
     image: postgres:15
     container_name: weather_postgres
@@ -11,12 +31,13 @@
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: postgres  # Explicit command to keep it running
+    command: postgres
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
+    profiles: ["postgres"]
 
   pgadmin:
     image: dpage/pgadmin4
@@ -28,6 +49,7 @@
       - "5050:80"
     depends_on:
       - postgres
+    profiles: ["postgres"]
 
 volumes:
   postgres_data:

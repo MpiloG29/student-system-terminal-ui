@@ -8,6 +8,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.extract import WeatherExtractor
 from src.transform import WeatherTransformer
 from src.load import WeatherLoader
+from src.quality import WeatherQualityChecker
 from config.settings import Colors
 from datetime import datetime
 
@@ -18,6 +19,7 @@ class WeatherPipeline:
         self.extractor = WeatherExtractor()
         self.transformer = WeatherTransformer()
         self.loader = WeatherLoader()
+        self.quality_checker = WeatherQualityChecker()
         
     def run(self):
         """Execute the complete ETL pipeline"""
@@ -43,8 +45,13 @@ class WeatherPipeline:
             print(f"\n{Colors.BOLD}🔄 STEP 2: TRANSFORMATION{Colors.RESET}")
             current_df, hourly_df, daily_df = self.transformer.transform_all(raw_data)
             
+            # QUALITY
+            print(f"\n{Colors.BOLD}🧪 STEP 3: DATA QUALITY CHECKS{Colors.RESET}")
+            self.quality_checker.run_checks(current_df, hourly_df, daily_df)
+
             # LOAD
             print(f"\n{Colors.BOLD}📥 STEP 3: LOADING{Colors.RESET}")
+            print(f"\n{Colors.BOLD}📥 STEP 4: LOADING{Colors.RESET}")
             self.loader.load_all(current_df, hourly_df, daily_df)
             
             # Summary

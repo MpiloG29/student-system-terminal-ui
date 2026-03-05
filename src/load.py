@@ -1,4 +1,4 @@
-import psycopg2
+# Remove this line: import psycopg2
 from sqlalchemy import create_engine, text
 import pandas as pd
 from typing import Dict

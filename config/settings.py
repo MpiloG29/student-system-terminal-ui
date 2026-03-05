@@ -14,29 +14,19 @@ class Colors:
     RESET = Style.RESET_ALL
     BOLD = Style.BRIGHT
 
-# --- Core Configuration with pg8000 and pipeline_admin ---
-DB_USER = 'pipeline_admin'
-DB_PASSWORD = 'admin123'
-DB_HOST = '127.0.0.1'
-DB_PORT = '5432'
-DB_NAME = 'weather_db'
-
-# CRITICAL: Use pg8000 driver explicitly
-import os
-# Use a file-based SQLite database in your project folder
-DATABASE_URL = f"sqlite:///{os.path.abspath('weather_data.db')}"
+# --- SQLite Configuration ---
+# Simple file-based database, no authentication needed!
+DB_PATH = os.path.abspath('weather_data.db')
+DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 # Keep DB_CONFIG for any legacy code
 DB_CONFIG = {
-    'host': DB_HOST,
-    'port': DB_PORT,
-    'database': DB_NAME,
-    'user': DB_USER,
-    'password': DB_PASSWORD
+    'database': DB_PATH
 }
 
 # --- API Configuration ---
 OPEN_METEO_BASE_URL = "https://api.open-meteo.com/v1/forecast"
+
 CITIES = [
     {"name": "New York", "country": "USA", "lat": 40.7128, "lon": -74.0060},
     {"name": "London", "country": "UK", "lat": 51.5074, "lon": -0.1278},
