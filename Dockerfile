@@ -15,13 +15,14 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY src/ ./src/
-COPY config/ ./config/
-COPY dashboard/ ./dashboard/
-COPY run_pipeline.py .
+COPY . .
 
 # Create data directory for persistent storage
 RUN mkdir -p /app/data
 
-# Run the pipeline with option 1 (ETL only)
-CMD ["python", "run_pipeline.py", "1"]
+
+EXPOSE 5000
+
+# Default to web runtime so Render Web Services stay alive.
+# For one-off ETL runs, override command: python run_pipeline.py 1
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5000} web_app:app"]
