@@ -157,7 +157,7 @@ The dashboard automatically detects extreme conditions:
 Render (Live Demo)
 The pipeline is deployed on Render and runs automatically every hour:
 
-Live URL: https://weather-pipeline.onrender.com
+Live URL: https://weather-data-pipeline-project-2jxz.onrender.com/dashboard
 
 # Environment Variables
 
